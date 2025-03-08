@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Navigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
@@ -13,7 +12,7 @@ import {
   GraduationCap,
   Building,
   FileText,
-  Flask,
+  Beaker,
   Settings,
   User,
   LogOut
@@ -23,7 +22,6 @@ const DashboardPage = () => {
   const { user, isAuthenticated, isLoading, logout } = useAuth();
   const [activeTab, setActiveTab] = useState('overview');
 
-  // If not authenticated, redirect to login
   if (isLoading) {
     return <div className="flex items-center justify-center min-h-screen">Loading...</div>;
   }
@@ -32,19 +30,17 @@ const DashboardPage = () => {
     return <Navigate to="/auth" />;
   }
 
-  // Helper to get role-specific icon
   const getRoleIcon = () => {
     switch (user?.role) {
       case 'admin': return <Shield className="h-8 w-8 text-red-500" />;
       case 'educator': return <GraduationCap className="h-8 w-8 text-blue-500" />;
       case 'learner': return <BookOpen className="h-8 w-8 text-green-500" />;
       case 'organization': return <Building className="h-8 w-8 text-purple-500" />;
-      case 'researcher': return <Flask className="h-8 w-8 text-amber-500" />;
+      case 'researcher': return <Beaker className="h-8 w-8 text-amber-500" />;
       default: return <User className="h-8 w-8 text-gray-500" />;
     }
   };
 
-  // Role-specific dashboard content
   const getDashboardContent = () => {
     switch (user?.role) {
       case 'admin':
@@ -545,7 +541,7 @@ const ResearcherDashboard = () => (
           <div className="space-y-4">
             <div className="flex items-start gap-4 p-4 rounded-lg border border-guardian-200 hover:bg-guardian-50">
               <div className="rounded-md bg-purple-100 p-2 text-purple-700">
-                <Flask size={24} />
+                <Beaker size={24} />
               </div>
               <div>
                 <div className="flex items-center justify-between">
@@ -565,7 +561,7 @@ const ResearcherDashboard = () => (
             
             <div className="flex items-start gap-4 p-4 rounded-lg border border-guardian-200 hover:bg-guardian-50">
               <div className="rounded-md bg-blue-100 p-2 text-blue-700">
-                <Flask size={24} />
+                <Beaker size={24} />
               </div>
               <div>
                 <div className="flex items-center justify-between">
