@@ -1,7 +1,7 @@
-
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { Link } from 'react-router-dom';
 
 interface GradientButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   gradientFrom?: string;
@@ -12,6 +12,8 @@ interface GradientButtonProps extends React.ButtonHTMLAttributes<HTMLButtonEleme
   children: React.ReactNode;
   variant?: 'default' | 'outline' | 'ghost';
   size?: 'default' | 'sm' | 'lg' | 'icon';
+  href?: string;
+  external?: boolean;
 }
 
 const GradientButton: React.FC<GradientButtonProps> = ({
@@ -23,6 +25,8 @@ const GradientButton: React.FC<GradientButtonProps> = ({
   children,
   variant = 'default',
   size = 'default',
+  href,
+  external = false,
   ...props
 }) => {
   const baseClasses = cn(
@@ -30,49 +34,67 @@ const GradientButton: React.FC<GradientButtonProps> = ({
     className
   );
 
+  const buttonContent = (
+    <>
+      <span className="z-10 relative">{children}</span>
+    </>
+  );
+
+  // Button styles based on variant
+  let buttonStyles = '';
+  
   if (variant === 'default') {
+    buttonStyles = `bg-gradient-to-r ${gradientFrom} ${gradientTo} hover:bg-gradient-to-r ${hoverFrom} ${hoverTo} text-white shadow-md`;
+  } else if (variant === 'outline') {
+    buttonStyles = 'border-2 border-guardian-500/50 text-guardian-700 hover:text-guardian-800 hover:border-guardian-600 bg-white/5 backdrop-blur-sm';
+  } else { // Ghost variant
+    buttonStyles = 'text-guardian-700 hover:text-guardian-800 hover:bg-guardian-100/50';
+  }
+
+  // If href is provided, render as a Link
+  if (href) {
+    if (external) {
+      return (
+        <a 
+          href={href}
+          target="_blank"
+          rel="noopener noreferrer"
+          className={cn(
+            baseClasses,
+            buttonStyles,
+            "inline-flex items-center justify-center rounded-md px-4 py-2 text-sm font-medium"
+          )}
+        >
+          {buttonContent}
+        </a>
+      );
+    }
+    
     return (
-      <Button
+      <Link
+        to={href}
         className={cn(
           baseClasses,
-          `bg-gradient-to-r ${gradientFrom} ${gradientTo} hover:bg-gradient-to-r ${hoverFrom} ${hoverTo} text-white shadow-md`
+          buttonStyles,
+          "inline-flex items-center justify-center rounded-md px-4 py-2 text-sm font-medium"
         )}
-        size={size}
-        {...props}
       >
-        <span className="z-10 relative">{children}</span>
-      </Button>
+        {buttonContent}
+      </Link>
     );
   }
 
-  if (variant === 'outline') {
-    return (
-      <Button
-        variant="outline"
-        className={cn(
-          baseClasses,
-          'border-2 border-guardian-500/50 text-guardian-700 hover:text-guardian-800 hover:border-guardian-600 bg-white/5 backdrop-blur-sm'
-        )}
-        size={size}
-        {...props}
-      >
-        {children}
-      </Button>
-    );
-  }
-
-  // Ghost variant
+  // Otherwise render as a Button
   return (
     <Button
-      variant="ghost"
       className={cn(
         baseClasses,
-        'text-guardian-700 hover:text-guardian-800 hover:bg-guardian-100/50'
+        buttonStyles
       )}
       size={size}
       {...props}
     >
-      {children}
+      {buttonContent}
     </Button>
   );
 };

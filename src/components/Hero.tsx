@@ -56,14 +56,23 @@ const Hero = () => {
               text="Guardian IO combines cutting-edge technology with ethical AI principles to revolutionize education, ensuring learners worldwide develop critical thinking and digital literacy."
               delay={1000}
               speed={20}
+              cursorColor="bg-guardian-600"
+              highlightText={true}
             />
           </div>
 
           <div className={`flex flex-col sm:flex-row gap-4 mb-16 transition-all duration-700 delay-700 transform ${isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}>
-            <GradientButton size="lg">
+            <GradientButton 
+              size="lg"
+              href="/academy"
+            >
               Start Learning
             </GradientButton>
-            <GradientButton variant="outline" size="lg">
+            <GradientButton 
+              variant="outline" 
+              size="lg"
+              href="#features"
+            >
               Explore Platform
             </GradientButton>
           </div>
