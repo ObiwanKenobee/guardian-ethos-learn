@@ -1,10 +1,13 @@
 
 import React, { useEffect, useState } from 'react';
-import { ArrowDown, BookText, Brain, Globe, Shield } from 'lucide-react';
+import { ArrowDown, BookText, Brain, Globe, Shield, LogIn } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import GradientButton from './GradientButton';
 import AnimatedText from './AnimatedText';
+import { useAuth } from '@/contexts/AuthContext';
 
 const Hero = () => {
+  const { isAuthenticated } = useAuth();
   const [isLoaded, setIsLoaded] = useState(false);
   const [showScrollIndicator, setShowScrollIndicator] = useState(false);
 
@@ -62,19 +65,31 @@ const Hero = () => {
           </div>
 
           <div className={`flex flex-col sm:flex-row gap-4 mb-16 transition-all duration-700 delay-700 transform ${isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}>
-            <GradientButton 
-              size="lg"
-              href="/academy"
-            >
-              Start Learning
-            </GradientButton>
-            <GradientButton 
-              variant="outline" 
-              size="lg"
-              href="#features"
-            >
-              Explore Platform
-            </GradientButton>
+            {isAuthenticated ? (
+              <GradientButton 
+                size="lg"
+                href="/dashboard"
+              >
+                Go to Dashboard
+              </GradientButton>
+            ) : (
+              <>
+                <GradientButton 
+                  size="lg"
+                  href="/auth"
+                >
+                  <LogIn size={18} />
+                  <span>Sign In</span>
+                </GradientButton>
+                <GradientButton 
+                  variant="outline" 
+                  size="lg"
+                  href="/academy"
+                >
+                  Explore Platform
+                </GradientButton>
+              </>
+            )}
           </div>
 
           <div className={`grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-12 max-w-4xl mx-auto transition-all duration-700 delay-900 transform ${isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}>
